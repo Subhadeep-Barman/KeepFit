@@ -34,6 +34,9 @@ FitMate is designed to act as a virtual personal gym trainer, leveraging advance
 - [Bootstrap](https://getbootstrap.com/)
 
 ---
+## Website Recording
+[![Watch the video](https://img.youtube.com/vi/CMliL6Nh_Fw/hqdefault.jpg)](https://www.youtube.com/watch?v=CMliL6Nh_Fw)
+
 
 ## Getting Started
 
@@ -71,73 +74,90 @@ Ensure you have the following installed on your system:
 
 ---
 
-##Workflow Explanation of the Flask Application
+### Workflow Explanation of the Flask Application
+
 This Flask application serves as a virtual personal trainer, utilizing computer vision and machine learning techniques to count repetitions for various exercises like curls, squats, pull-ups, and more. The following is a step-by-step breakdown of how the code works:
 
-1. Import Libraries and Initialize Flask
+---
+
+### 1. **Import Libraries and Initialize Flask**
 The necessary libraries are imported:
+- `Flask`: To handle routing and serving web pages.
+- `cv2`: OpenCV for video capture and frame processing.
+- `mediapipe`: For pose detection and drawing utilities.
+- `numpy`: For mathematical operations, especially to calculate the angle of joints.
 
-Flask: To handle routing and serving web pages.
-cv2: OpenCV for video capture and frame processing.
-mediapipe: For pose detection and drawing utilities.
-numpy: For mathematical operations, especially to calculate the angle of joints.
-The Flask application object is created using app = Flask(__name__).
+The `Flask` application object is created using `app = Flask(__name__)`.
 
-2. Helper Function: calculate_angle
-The calculate_angle function takes three points (a, b, c), representing joint coordinates, and calculates the angle at point b. This is achieved through trigonometry using the arctangent of the slopes between the points.
+---
 
-How it works:
+### 2. **Helper Function: `calculate_angle`**
+The `calculate_angle` function takes three points (a, b, c), representing joint coordinates, and calculates the angle at point `b`. This is achieved through trigonometry using the arctangent of the slopes between the points.
 
-Convert points a, b, and c into numpy arrays.
-Use np.arctan2 to calculate the difference in slopes and derive the angle in radians.
-Convert radians into degrees and return the calculated angle.
-3. Video Frame Processing for Curls: curls_frame()
+**How it works:**
+- Convert points `a`, `b`, and `c` into numpy arrays.
+- Use `np.arctan2` to calculate the difference in slopes and derive the angle in radians.
+- Convert radians into degrees and return the calculated angle.
+
+---
+
+### 3. **Video Frame Processing for Curls: `curls_frame()`**
 This function continuously captures frames from the webcam, processes them using Mediapipe's pose detection, and renders feedback (angles and repetition counts) on the frames. It also flips the video horizontally for a mirrored effect.
 
-How it works:
+**How it works:**
+- **Capture Frame:** It reads a video frame from the webcam and flips it to provide a mirror view.
+- **Pose Detection:** Convert the frame to RGB and pass it to `pose.process()` to detect body landmarks.
+- **Extract Landmarks:** Try to extract specific joint landmarks for both left and right arms (shoulder, elbow, and wrist).
+- **Angle Calculation:** Calculate the angle at the elbow joint for both arms using the `calculate_angle` function.
+- **Repetition Logic:** Count repetitions based on arm angles:
+  - When the elbow angle is >170 degrees, the arm is "down".
+  - When the angle is <15 degrees and the previous state was "down", increment the repetition count and set the state to "up".
+- **Rendering Feedback:** The angles and repetition counts are rendered onto the frame using OpenCV's `putText` function, and a rectangle box is drawn to display the current stage and reps for both left and right arms.
+- **Render Landmarks:** The body pose landmarks are drawn on the frame using Mediapipe's drawing utilities.
 
-Capture Frame: It reads a video frame from the webcam and flips it to provide a mirror view.
-Pose Detection: Convert the frame to RGB and pass it to pose.process() to detect body landmarks.
-Extract Landmarks: Try to extract specific joint landmarks for both left and right arms (shoulder, elbow, and wrist).
-Angle Calculation: Calculate the angle at the elbow joint for both arms using the calculate_angle function.
-Repetition Logic: Count repetitions based on arm angles:
-When the elbow angle is >170 degrees, the arm is "down".
-When the angle is <15 degrees and the previous state was "down", increment the repetition count and set the state to "up".
-Rendering Feedback: The angles and repetition counts are rendered onto the frame using OpenCV's putText function, and a rectangle box is drawn to display the current stage and reps for both left and right arms.
-Render Landmarks: The body pose landmarks are drawn on the frame using Mediapipe's drawing utilities.
-The processed frame is saved as a JPEG image and sent to the browser using Flask's Response object with a multipart/x-mixed-replace mimetype to simulate live video streaming.
+The processed frame is saved as a JPEG image and sent to the browser using Flask's `Response` object with a `multipart/x-mixed-replace` mimetype to simulate live video streaming.
 
-4. Flask Routes for Web Pages
+---
+
+### 4. **Flask Routes for Web Pages**
 Several routes are defined to render different HTML templates and video feeds for different exercises:
 
-/: This route renders the homepage, which is index.html.
-/curls, /squats, /pullups, /raise, /jacks, /pushups: These routes render specific HTML templates for each type of exercise. Each HTML file corresponds to an exercise that the user can select.
-Video Feed Routes:
-/curls_feed, /squats_feed, /pullups_feed, etc.: These routes provide the live video feed for each exercise, calling the appropriate video frame processing function (e.g., curls_frame(), squats_frame(), etc.) and using Flask’s Response to stream the video to the browser in real-time.
-5. How the Application Executes
-Step-by-Step Execution:
-Starting the Application:
+- **`/`:** This route renders the homepage, which is `index.html`.
+- **`/curls`, `/squats`, `/pullups`, `/raise`, `/jacks`, `/pushups`:** These routes render specific HTML templates for each type of exercise. Each HTML file corresponds to an exercise that the user can select.
+- **Video Feed Routes:**
+  - **`/curls_feed`, `/squats_feed`, `/pullups_feed`, etc.:** These routes provide the live video feed for each exercise, calling the appropriate video frame processing function (e.g., `curls_frame()`, `squats_frame()`, etc.) and using Flask’s `Response` to stream the video to the browser in real-time.
 
-When the user runs the application (python app.py), Flask starts a local server and listens on localhost (default is port 5000).
-Loading the Homepage:
+---
 
-When the user opens http://localhost:5000, the homepage (index.html) is rendered, allowing the user to navigate to different exercise pages like curls, squats, etc.
-Selecting an Exercise:
+### 5. **How the Application Executes**
 
-The user selects an exercise, for example, curls. This action triggers the /curls route, rendering curls.html.
-Video Feed:
+#### Step-by-Step Execution:
+1. **Starting the Application:**
+   - When the user runs the application (`python app.py`), Flask starts a local server and listens on `localhost` (default is `port 5000`).
+   
+2. **Loading the Homepage:**
+   - When the user opens `http://localhost:5000`, the homepage (`index.html`) is rendered, allowing the user to navigate to different exercise pages like curls, squats, etc.
 
-Once the user is on the curls page, the embedded video element on the page requests the /curls_feed route, which calls the curls_frame() function.
-The video feed is processed in real-time, detecting the user's pose using Mediapipe and providing feedback (repetition count, angle, etc.) on the displayed video.
-Repetition Counting:
+3. **Selecting an Exercise:**
+   - The user selects an exercise, for example, curls. This action triggers the `/curls` route, rendering `curls.html`.
 
-As the user performs the exercise (e.g., bicep curls), the elbow angle is calculated for each frame, and the repetition count is updated based on the change in arm angle.
-The updated count is rendered on the video feed.
-Real-Time Updates:
+4. **Video Feed:**
+   - Once the user is on the curls page, the embedded video element on the page requests the `/curls_feed` route, which calls the `curls_frame()` function.
+   - The video feed is processed in real-time, detecting the user's pose using Mediapipe and providing feedback (repetition count, angle, etc.) on the displayed video.
 
-The video feed is streamed back to the user's browser, providing real-time feedback on form and progress.
-6. Flask Application Run
-Finally, the application runs with app.run(), which starts the server and handles requests.
+5. **Repetition Counting:**
+   - As the user performs the exercise (e.g., bicep curls), the elbow angle is calculated for each frame, and the repetition count is updated based on the change in arm angle.
+   - The updated count is rendered on the video feed.
+
+6. **Real-Time Updates:**
+   - The video feed is streamed back to the user's browser, providing real-time feedback on form and progress.
+
+---
+
+### 6. **Flask Application Run**
+Finally, the application runs with `app.run()`, which starts the server and handles requests.
+
+---
 
 This structure ensures that users can easily interact with the application, perform various exercises, and receive live feedback on their form and progress. Each exercise page is tied to its specific video feed and processing logic, enabling real-time tracking and feedback for multiple types of workouts.
 ## Usage
