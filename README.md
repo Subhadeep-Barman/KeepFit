@@ -1,6 +1,6 @@
-# FitMate - A Virtual Gym Trainer App
+# KeepFit - A Virtual Gym Trainer App
 
-FitMate is a virtual personal gym trainer application that utilizes computer vision and machine learning technologies to track your exercise form in real-time. It provides instant feedback on your poses, angles, and repetitions, helping users improve their workout efficiency and form.
+KeepFit is a virtual personal gym trainer application that utilizes computer vision and machine learning technologies to track your exercise form in real-time. It provides instant feedback on your poses, angles, and repetitions, helping users improve their workout efficiency and form.
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@ FitMate is a virtual personal gym trainer application that utilizes computer vis
 
 ## About The Project
 
-FitMate is designed to act as a virtual personal gym trainer, leveraging advanced pose estimation techniques to detect users' exercise poses and provide real-time feedback. It distinguishes user poses by evaluating pose landmarks and vector geometry, offering valuable insights to improve form and efficiency.
+KeepFit is designed to act as a virtual personal gym trainer, leveraging advanced pose estimation techniques to detect users' exercise poses and provide real-time feedback. It distinguishes user poses by evaluating pose landmarks and vector geometry, offering valuable insights to improve form and efficiency.
 
 ### Key Features:
 - Pose detection for various exercises.
@@ -51,12 +51,12 @@ Ensure you have the following installed on your system:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/syedalihn/FitMate.git
+   git clone https://github.com/syedalihn/KeepFit.git
    ```
 
 2. **Navigate to the project directory**
    ```bash
-   cd FitMate
+   cd KeepFit
    ```
 
 3. **Install required Python packages**
@@ -162,50 +162,7 @@ Finally, the application runs with `app.run()`, which starts the server and hand
 This structure ensures that users can easily interact with the application, perform various exercises, and receive live feedback on their form and progress. Each exercise page is tied to its specific video feed and processing logic, enabling real-time tracking and feedback for multiple types of workouts.
 ## Usage
 
-FitMate can be used in various settings such as homes, offices, or any personal space. Simply set up your camera, perform your exercises, and receive real-time feedback on your form and repetitions.
+KeepFit can be used in various settings such as homes, offices, or any personal space. Simply set up your camera, perform your exercises, and receive real-time feedback on your form and repetitions.
 
 ---
 
-## Roadmap
-
-- [ ] Add a changelog
-- [ ] Add more exercise types for pose detection
-- [ ] Enhance feedback accuracy for complex movements
-- [ ] Add integration with fitness tracking APIs
-- [ ] Improve user interface with Bootstrap templates
-
-See the [open issues](https://github.com/syedalihn/FitMate/issues) for a full list of proposed features and known issues.
-
----
-
-## Contributing
-
-Contributions make the open-source community a fantastic place to learn and grow. Any contributions you make to **FitMate** are greatly appreciated.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## Contact
-
-- Project Link: [https://github.com/syedalihn/FitMate](https://github.com/syedalihn/FitMate)
-
----
-
-## Acknowledgments
-
-Special thanks to the following tools and libraries:
-
-- [Mediapipe](https://mediapipe.dev/)
-- [Flask](https://flask.palletsprojects.com)
-- [OpenCV](https://opencv.org/)
-- [Bootstrap](https://getbootstrap.com/)
-- [GitHub Pages](https://pages.github.com/)
-
----
-
-Feel free to use and modify this template according to your project's needs!
